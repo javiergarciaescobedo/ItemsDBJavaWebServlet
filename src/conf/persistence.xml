@@ -5,7 +5,7 @@
     <class>es.javiergarciaescobedo.sampleitemsdbjavaweb.model.Item</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sampleitemsdbjavaweb?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/devwebapps?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="devwebapps"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value="devwebapps"/>
