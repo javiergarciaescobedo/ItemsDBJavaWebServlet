@@ -4,6 +4,7 @@ import es.javiergarciaescobedo.sampleitemsdbjavaweb.model.Item;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -34,12 +35,14 @@ public class GenerateRandomItem extends HttpServlet {
                 
                 Item item = new Item();
                 String astring = "";
-                for(int i=0; i<10; i++) {
+                for(int i=0; i<=10+random.nextInt(10); i++) {
                     astring += (char)('A' + random.nextInt(26));
                 }
                 item.setAstring(astring);
-                item.setAnumber(random.nextInt());
-                item.setAdate(Calendar.getInstance().getTime());
+                item.setAnumber(random.nextInt(1000000));
+                Date randomDate = new Date(
+                        System.currentTimeMillis() - Math.abs(random.nextInt()));
+                item.setAdate(randomDate);
                 
                 EntityManager entityManager = Persistence.createEntityManagerFactory("SampleItemsDBJavaWebPU").createEntityManager(); 
                 entityManager.getTransaction().begin();

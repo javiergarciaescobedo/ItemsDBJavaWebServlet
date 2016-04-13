@@ -1,14 +1,21 @@
 package es.javiergarciaescobedo.sampleitemsdbjavaweb;
 
-import java.io.BufferedReader;
+import es.javiergarciaescobedo.sampleitemsdbjavaweb.model.Items;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 @WebServlet(name = "RequestItems", urlPatterns = {"/RequestItems"})
 public class RequestItems extends HttpServlet {
@@ -24,38 +31,23 @@ public class RequestItems extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/xml;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RequestItems</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RequestItems at " + request.getContextPath() + "</h1>");
-            Enumeration enumeration = request.getParameterNames();
-            while (enumeration.hasMoreElements()) {
-                String parameterName = (String) enumeration.nextElement();
-                out.println("<p>parameterName " + parameterName + "</p>");
-                out.println("<p>parameterValue " + request.getParameter(parameterName) + "</p>");
+            String strAction = request.getParameter("action");
+            if(strAction.equals("select")) {
+                EntityManager entityManager = Persistence.createEntityManagerFactory("SampleItemsDBJavaWebPU").createEntityManager(); 
+                Query query = entityManager.createNamedQuery("Item.findAll"); 
+                Items items = new Items(); 
+                items.setItemsList(query.getResultList());
+                JAXBContext jaxbContext = JAXBContext.newInstance(Items.class);
+                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                jaxbMarshaller.marshal(items, out);
             }
-            
-            
-            out.println("Request content type: " + request.getContentType() + " content length: " + request.getContentLength());
-           BufferedReader b = new BufferedReader(request.getReader());
-           
-           StringBuffer workBuffer = new StringBuffer(); 
-            String workString = b.readLine();           
-           while(workString != null) {
-                  workBuffer.append(workString);
-                  workString = b.readLine();
-           }
-           out.println(workBuffer.toString());
-           b.close();
-            
-            out.println("</body>");
-            out.println("</html>");
+        } catch (JAXBException ex) {
+            Logger.getLogger(RequestItems.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(RequestItems.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
