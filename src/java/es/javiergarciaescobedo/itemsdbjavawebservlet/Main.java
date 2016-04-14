@@ -1,10 +1,8 @@
-package es.javiergarciaescobedo.sampleitemsdbjavaweb;
+package es.javiergarciaescobedo.itemsdbjavawebservlet;
 
-import es.javiergarciaescobedo.sampleitemsdbjavaweb.model.Items;
+import es.javiergarciaescobedo.itemsdbjavawebservlet.model.Items;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -14,11 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-@WebServlet(name = "RequestItems", urlPatterns = {"/RequestItems"})
-public class RequestItems extends HttpServlet {
+@WebServlet(name = "Main", urlPatterns = {"/Main"})
+public class Main extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,10 +28,8 @@ public class RequestItems extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/xml;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String strAction = request.getParameter("action");
-            if(strAction.equals("select")) {
+            try {                            
                 EntityManager entityManager = Persistence.createEntityManagerFactory("SampleItemsDBJavaWebPU").createEntityManager(); 
                 Query query = entityManager.createNamedQuery("Item.findAll"); 
                 Items items = new Items(); 
@@ -43,11 +38,11 @@ public class RequestItems extends HttpServlet {
                 Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
                 jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
                 jaxbMarshaller.marshal(items, out);
+            } catch(Exception e) {
+                out.println("<error>");
+                e.printStackTrace(out);
+                out.println("</error>");
             }
-        } catch (JAXBException ex) {
-            Logger.getLogger(RequestItems.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(RequestItems.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

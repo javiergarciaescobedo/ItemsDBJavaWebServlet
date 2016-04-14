@@ -1,9 +1,8 @@
-package es.javiergarciaescobedo.sampleitemsdbjavaweb;
+package es.javiergarciaescobedo.itemsdbjavawebservlet;
 
-import es.javiergarciaescobedo.sampleitemsdbjavaweb.model.Item;
+import es.javiergarciaescobedo.itemsdbjavawebservlet.model.Item;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import javax.persistence.EntityManager;

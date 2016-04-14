@@ -1,4 +1,4 @@
-package es.javiergarciaescobedo.sampleitemsdbjavaweb.model;
+package es.javiergarciaescobedo.itemsdbjavawebservlet.model;
 
 import java.util.ArrayList;
 import java.util.List;
