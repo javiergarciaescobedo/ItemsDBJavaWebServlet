@@ -6,6 +6,7 @@
 package es.javiergarciaescobedo.itemsdbjavawebservlet.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -34,6 +37,20 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Item.findByAnumber", query = "SELECT i FROM Item i WHERE i.anumber = :anumber"),
     @NamedQuery(name = "Item.findByAdate", query = "SELECT i FROM Item i WHERE i.adate = :adate")})
 public class Item implements Serializable {
+
+    @Column(name = "atime")
+    @Temporal(TemporalType.TIME)
+    private Date atime;
+    @Column(name = "aboolean")
+    private Boolean aboolean;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "aprice")
+    private BigDecimal aprice;
+    @Column(name = "adouble")
+    private Double adouble;
+    @JoinColumn(name = "category", referencedColumnName = "id")
+    @ManyToOne
+    private Category category;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -111,6 +128,46 @@ public class Item implements Serializable {
     @Override
     public String toString() {
         return "es.javiergarciaescobedo.sampleitemsdbjavaweb.model.Item[ id=" + id + " ]";
+    }
+
+    public Date getAtime() {
+        return atime;
+    }
+
+    public void setAtime(Date atime) {
+        this.atime = atime;
+    }
+
+    public Boolean getAboolean() {
+        return aboolean;
+    }
+
+    public void setAboolean(Boolean aboolean) {
+        this.aboolean = aboolean;
+    }
+
+    public BigDecimal getAprice() {
+        return aprice;
+    }
+
+    public void setAprice(BigDecimal aprice) {
+        this.aprice = aprice;
+    }
+
+    public Double getAdouble() {
+        return adouble;
+    }
+
+    public void setAdouble(Double adouble) {
+        this.adouble = adouble;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
     
 }
