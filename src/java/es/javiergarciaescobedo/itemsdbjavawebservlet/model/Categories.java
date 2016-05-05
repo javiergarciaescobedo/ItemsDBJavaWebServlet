@@ -9,22 +9,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Items {
+public class Categories {
 
-    // A la etiqueta que identifique el inicio y fin de cada item en el XML, se le va
-    //  a llamar 'item' en lugar de 'itemlist'
-    @XmlElement(name = "item")
-    private List<Item> itemsList;
+    // A la etiqueta que identifique el inicio y fin de cada categoría en el XML, se le va
+    //  a llamar 'categories' en lugar de 'categoriesList'
+    @XmlElement(name = "categories")
+    private List<Category> categoriesList;
 
-    public Items() {
-        itemsList = new ArrayList();
+    public Categories() {
+        categoriesList = new ArrayList();
     }
-    public List<Item> getItemsList() {
-        return itemsList;
+    public List<Category> getCategoriesList() {
+        return categoriesList;
     }
 
-    public void setItemsList(List<Item> itemsList) {
-        this.itemsList = itemsList;
+    public void setCategoriesList(List<Category> categoriesList) {
+        this.categoriesList = categoriesList;
     }
 
 }

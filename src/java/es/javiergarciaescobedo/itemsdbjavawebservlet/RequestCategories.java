@@ -1,7 +1,7 @@
 package es.javiergarciaescobedo.itemsdbjavawebservlet;
 
-import es.javiergarciaescobedo.itemsdbjavawebservlet.model.Item;
-import es.javiergarciaescobedo.itemsdbjavawebservlet.model.Items;
+import es.javiergarciaescobedo.itemsdbjavawebservlet.model.Categories;
+import es.javiergarciaescobedo.itemsdbjavawebservlet.model.Category;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -20,10 +20,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-@WebServlet(name = "RequestItems", urlPatterns = {"/RequestItems"})
-public class RequestItems extends HttpServlet {
+@WebServlet(name = "RequestCategories", urlPatterns = {"/RequestCategories"})
+public class RequestCategories extends HttpServlet {
 
-    private static final Logger LOG = Logger.getLogger(RequestItems.class.getName());
+    private static final Logger LOG = Logger.getLogger(RequestCategories.class.getName());
     
     public static final byte ACTION_GET = 0;    // SELECT
     public static final byte ACTION_POST = 1;   // INSERT
@@ -48,48 +48,42 @@ public class RequestItems extends HttpServlet {
             LOG.setLevel(Level.ALL);
             LOG.fine("Request received");
             EntityManager entityManager = Persistence.createEntityManagerFactory("SampleItemsDBJavaWebPU").createEntityManager(); 
-            JAXBContext jaxbContext = JAXBContext.newInstance(Items.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(Categories.class);
             
-            Items items = new Items();
+            Categories categories = new Categories();
             if(action != ACTION_GET) {
                 Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                items = (Items) jaxbUnmarshaller.unmarshal(request.getInputStream());
+                categories = (Categories) jaxbUnmarshaller.unmarshal(request.getInputStream());
             }
 
             entityManager.getTransaction().begin();
             switch (action) {
                 case ACTION_GET:
                     LOG.fine("Action GET requested");
-                    Query query = entityManager.createNamedQuery("Item.findAll");
-                    items.setItemsList(query.getResultList());
+                    Query query = entityManager.createNamedQuery("Category.findAll");
+                    categories.setCategoriesList(query.getResultList());
                     break;
                 case ACTION_POST:
                     LOG.fine("Action POST requested");
-                    for(Item item :  items.getItemsList()) {
-                        LOG.fine("Inserting Item[ id=" + item.getId()
-                                + "; astring=" + item.getAstring()
-                                + "; anumber=" + item.getAnumber()
-                                + "; adate=" + item.getAdate() + " ]");
-                        entityManager.persist(item);
+                    for(Category category :  categories.getCategoriesList()) {
+                        LOG.fine("Inserting Category[ id=" + category.getId()
+                                + "; name=" + category.getName() + " ]");
+                        entityManager.persist(category);
                     }   break;
                 case ACTION_PUT:
                     LOG.fine("Action PUT requested");
-                    for(Item item :  items.getItemsList()) {
-                        LOG.fine("Updating Item[ id=" + item.getId()
-                                + "; astring=" + item.getAstring()
-                                + "; anumber=" + item.getAnumber()
-                                + "; adate=" + item.getAdate() + " ]");
-                        entityManager.merge(item);
+                    for(Category category :  categories.getCategoriesList()) {
+                        LOG.fine("Updating Category[ id=" + category.getId()
+                                + "; name=" + category.getName() + " ]");
+                        entityManager.merge(category);
                     }   break;
                 case ACTION_DELETE:
                     LOG.fine("Action DELETE requested");
-                    for(Item item :  items.getItemsList()) {
-                        LOG.fine("Removing Item[ id=" + item.getId()
-                                + "; astring=" + item.getAstring()
-                                + "; anumber=" + item.getAnumber()
-                                + "; adate=" + item.getAdate() + " ]");
-                        item = entityManager.find(Item.class, item.getId());
-                        entityManager.remove(item);
+                    for(Category category :  categories.getCategoriesList()) {
+                        LOG.fine("Removing Category[ id=" + category.getId()
+                                + "; name=" + category.getName() + " ]");
+                        category = entityManager.find(Category.class, category.getId());
+                        entityManager.remove(category);
                     }   break;
                 default:
                     break;
@@ -98,16 +92,16 @@ public class RequestItems extends HttpServlet {
             
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(items, out);
+            jaxbMarshaller.marshal(categories, out);
             
             LOG.fine("Response generated: ");
             StringWriter sw = new StringWriter();
-            jaxbMarshaller.marshal(items, sw);
+            jaxbMarshaller.marshal(categories, sw);
             LOG.fine(sw.toString());
         } catch (JAXBException ex) {
-            Logger.getLogger(RequestItems.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequestCategories.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(RequestItems.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RequestCategories.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

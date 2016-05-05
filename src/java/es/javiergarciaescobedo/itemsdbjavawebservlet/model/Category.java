@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.javiergarciaescobedo.itemsdbjavawebservlet.model;
 
 import java.io.Serializable;
@@ -22,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Javier
+ * @author Javier García Escobedo <javiergarciaescobedo.es>
  */
 @Entity
 @Table(name = "category")
