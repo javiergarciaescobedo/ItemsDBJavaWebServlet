@@ -1,7 +1,7 @@
 package es.javiergarciaescobedo.itemsdbjavawebservlet.model;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -28,13 +28,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
     @NamedQuery(name = "Item.findById", query = "SELECT i FROM Item i WHERE i.id = :id"),
-    @NamedQuery(name = "Item.findByAboolean", query = "SELECT i FROM Item i WHERE i.aboolean = :aboolean"),
-    @NamedQuery(name = "Item.findByAdate", query = "SELECT i FROM Item i WHERE i.adate = :adate"),
-    @NamedQuery(name = "Item.findByAdouble", query = "SELECT i FROM Item i WHERE i.adouble = :adouble"),
-    @NamedQuery(name = "Item.findByAnumber", query = "SELECT i FROM Item i WHERE i.anumber = :anumber"),
-    @NamedQuery(name = "Item.findByAprice", query = "SELECT i FROM Item i WHERE i.aprice = :aprice"),
     @NamedQuery(name = "Item.findByAstring", query = "SELECT i FROM Item i WHERE i.astring = :astring"),
-    @NamedQuery(name = "Item.findByAtime", query = "SELECT i FROM Item i WHERE i.atime = :atime")})
+    @NamedQuery(name = "Item.findByAnumber", query = "SELECT i FROM Item i WHERE i.anumber = :anumber"),
+    @NamedQuery(name = "Item.findByAdate", query = "SELECT i FROM Item i WHERE i.adate = :adate"),
+    @NamedQuery(name = "Item.findByAtime", query = "SELECT i FROM Item i WHERE i.atime = :atime"),
+    @NamedQuery(name = "Item.findByAboolean", query = "SELECT i FROM Item i WHERE i.aboolean = :aboolean"),
+    @NamedQuery(name = "Item.findByAprice", query = "SELECT i FROM Item i WHERE i.aprice = :aprice"),
+    @NamedQuery(name = "Item.findByAdouble", query = "SELECT i FROM Item i WHERE i.adouble = :adouble")})
 public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,23 +43,23 @@ public class Item implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "aboolean")
-    private Boolean aboolean;
+    @Column(name = "astring")
+    private String astring;
+    @Column(name = "anumber")
+    private Integer anumber;
     @Column(name = "adate")
     @Temporal(TemporalType.DATE)
     private Date adate;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "adouble")
-    private Double adouble;
-    @Column(name = "anumber")
-    private Integer anumber;
-    @Column(name = "aprice")
-    private BigInteger aprice;
-    @Column(name = "astring")
-    private String astring;
     @Column(name = "atime")
     @Temporal(TemporalType.TIME)
     private Date atime;
+    @Column(name = "aboolean")
+    private Boolean aboolean;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "aprice")
+    private BigDecimal aprice;
+    @Column(name = "adouble")
+    private Double adouble;
     @JoinColumn(name = "category", referencedColumnName = "id")
     @ManyToOne
     private Category category;
@@ -79,28 +79,12 @@ public class Item implements Serializable {
         this.id = id;
     }
 
-    public Boolean getAboolean() {
-        return aboolean;
+    public String getAstring() {
+        return astring;
     }
 
-    public void setAboolean(Boolean aboolean) {
-        this.aboolean = aboolean;
-    }
-
-    public Date getAdate() {
-        return adate;
-    }
-
-    public void setAdate(Date adate) {
-        this.adate = adate;
-    }
-
-    public Double getAdouble() {
-        return adouble;
-    }
-
-    public void setAdouble(Double adouble) {
-        this.adouble = adouble;
+    public void setAstring(String astring) {
+        this.astring = astring;
     }
 
     public Integer getAnumber() {
@@ -111,20 +95,12 @@ public class Item implements Serializable {
         this.anumber = anumber;
     }
 
-    public BigInteger getAprice() {
-        return aprice;
+    public Date getAdate() {
+        return adate;
     }
 
-    public void setAprice(BigInteger aprice) {
-        this.aprice = aprice;
-    }
-
-    public String getAstring() {
-        return astring;
-    }
-
-    public void setAstring(String astring) {
-        this.astring = astring;
+    public void setAdate(Date adate) {
+        this.adate = adate;
     }
 
     public Date getAtime() {
@@ -133,6 +109,30 @@ public class Item implements Serializable {
 
     public void setAtime(Date atime) {
         this.atime = atime;
+    }
+
+    public Boolean getAboolean() {
+        return aboolean;
+    }
+
+    public void setAboolean(Boolean aboolean) {
+        this.aboolean = aboolean;
+    }
+
+    public BigDecimal getAprice() {
+        return aprice;
+    }
+
+    public void setAprice(BigDecimal aprice) {
+        this.aprice = aprice;
+    }
+
+    public Double getAdouble() {
+        return adouble;
+    }
+
+    public void setAdouble(Double adouble) {
+        this.adouble = adouble;
     }
 
     public Category getCategory() {
